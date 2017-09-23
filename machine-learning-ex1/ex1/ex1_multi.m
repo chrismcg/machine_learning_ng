@@ -95,6 +95,26 @@ plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
 xlabel('Number of iterations');
 ylabel('Cost J');
 
+fprintf('Running multiple alpha test ...\n');
+% multiple runs
+function J_history = testAlpha (X, y, alpha)
+  [testTheta, J_history] = gradientDescentMulti(X, y, zeros(3, 1), alpha, 50);
+end
+
+alphas = [0.01, 0.03, 0.1, 0.3, 1];
+
+output = arrayfun(@(alpha) {alpha, testAlpha(X, y, alpha)}, alphas, "UniformOutput", false);
+
+colors = ['k', 'r', 'g', 'b', 'm'];
+
+for i = 1:size(output, 2)
+  alpha = output{i}{1};
+  J_history = output{i}{2};
+  plot(1:50, J_history, colors(i));
+  hold on;
+endfor
+
+
 % Display gradient descent's result
 fprintf('Theta computed from gradient descent: \n');
 fprintf(' %f \n', theta);
