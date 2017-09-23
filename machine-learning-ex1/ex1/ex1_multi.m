@@ -126,6 +126,11 @@ fprintf('\n');
 % not need to be normalized.
 price = 0; % You should change this
 
+to_estimate = [1650, 3];
+to_estimate_normalized = (to_estimate .- mu) ./ sigma;
+input = [1, to_estimate_normalized];
+price = input * theta;
+
 
 % ============================================================
 
@@ -171,6 +176,8 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 price = 0; % You should change this
 
+to_estimate = [1, 1650, 3];
+price = to_estimate * theta;
 
 % ============================================================
 
