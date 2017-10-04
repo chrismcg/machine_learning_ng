@@ -84,6 +84,10 @@ h_Theta = sigmoid(z3);
 
 J = sum(sum((-y_vectors .* log(h_Theta)) - ((1 - y_vectors) .* log(1 - h_Theta)), 2)) / m;
 
+regularization = (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2))) * lambda / (2 * m);
+
+J = J + regularization;
+
 
 
 
