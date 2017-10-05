@@ -64,6 +64,8 @@ Theta2_grad = zeros(size(Theta2));
 
 % Convert numeric 1-10 to vector of 10 elements with a 1 in the index
 % corresponding to the y value
+
+% forward propogation
 y_map = eye(num_labels);
 y_vectors = zeros(m, num_labels);
 
@@ -88,6 +90,33 @@ regularization = (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 
 
 J = J + regularization;
 
+% Back Prop
+
+for t = 1:m
+  % 1. feed forward step
+  a1 = [1 X(t, :)];
+  z2 = a1 * Theta1';
+  a2 = [1 sigmoid(z2)];
+
+  z3 = a2 * Theta2';
+  a3 = sigmoid(z3);
+
+  % 2. calculate output error
+  delta3 = a3 - y_vectors(t, :);
+
+  %  3. calculate hidden layer deltas
+  delta2 = (delta3 * Theta2) .* a2 .* (1 - a2);
+  delta2 = delta2(2:end);
+
+  % accumulate gradient
+  Theta2_grad = Theta2_grad + (delta3' * a2);
+  Theta1_grad = Theta1_grad + (delta2' * a1);
+end
+
+Theta2(:, 1) = 0;
+Theta2_grad = (Theta2_grad + (lambda * Theta2)) / m;
+Theta1(:, 1) = 0;
+Theta1_grad = (Theta1_grad + (lambda * Theta1)) / m;
 
 
 
