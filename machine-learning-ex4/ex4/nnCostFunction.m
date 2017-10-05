@@ -64,15 +64,9 @@ Theta2_grad = zeros(size(Theta2));
 
 % Convert numeric 1-10 to vector of 10 elements with a 1 in the index
 % corresponding to the y value
+y_vectors = [1:num_labels] == y;
 
 % forward propogation
-y_map = eye(num_labels);
-y_vectors = zeros(m, num_labels);
-
-for i = 1:m
-  y_vectors(i, :) = y_map(y(i), :);
-end
-
 a1 = [ones(m, 1) X];
 z2 = a1 * Theta1';
 
@@ -84,14 +78,13 @@ a2 = [ones(a2_size, 1) a2];
 z3 = a2 * Theta2';
 h_Theta = sigmoid(z3);
 
+% Cost calculation and regularization
 J = sum(sum((-y_vectors .* log(h_Theta)) - ((1 - y_vectors) .* log(1 - h_Theta)), 2)) / m;
-
 regularization = (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2))) * lambda / (2 * m);
 
 J = J + regularization;
 
 % Back Prop
-
 delta3 = h_Theta - y_vectors;
 delta2 = (delta3 * Theta2) .* a2 .* (1 - a2);
 delta2 = delta2(:, 2:end);
