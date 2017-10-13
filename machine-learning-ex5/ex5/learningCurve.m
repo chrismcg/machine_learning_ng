@@ -53,19 +53,31 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
-
+iterations = 50;
+iteration_error_train = zeros(iterations, 1);
+iteration_error_val = zeros(iterations, 1);
 
 for i = 1:m
-  Xi = X(1:i, :);
-  yi = y(1:i);
-  theta = trainLinearReg(Xi, yi, lambda);
+  for iteration = 1:iterations
+    randomTrainIndices = randperm(m);
+    Xi = X(randomTrainIndices(1:i), :);
+    yi = y(randomTrainIndices(1:i));
 
-  [J] = linearRegCostFunction(Xi, yi, theta, 0);
-  error_train(i) = J;
+    theta = trainLinearReg(Xi, yi, lambda);
 
-  [J] = linearRegCostFunction(Xval, yval, theta, 0);
-  error_val(i) = J;
+    [J] = linearRegCostFunction(Xi, yi, theta, 0);
+    iteration_error_train(iteration) = J;
 
+    randomValIndices = randperm(size(Xval, 1));
+    Xvali = Xval(randomValIndices(1:i), :);
+    yvali = yval(randomValIndices(1:i));
+
+    [J] = linearRegCostFunction(Xvali, yvali, theta, 0);
+    iteration_error_val(iteration) = J;
+  end
+
+  error_train(i) = mean(iteration_error_train);
+  error_val(i) = mean(iteration_error_val);
 end
 
 % -------------------------------------------------------------
