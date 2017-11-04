@@ -21,26 +21,29 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-m = size(X, 1);
-for i = 1:m
-  closestCentroid = -1;
-  distanceToClosestCentroid = Inf;
-  x = X(i, :);
+## m = size(X, 1);
+## for i = 1:m
+##   closestCentroid = -1;
+##   distanceToClosestCentroid = Inf;
+##   x = X(i, :);
 
-  for j = 1:K
-    distanceToJ = norm(x - centroids(j, :));
-    if distanceToJ < distanceToClosestCentroid
-      closestCentroid = j;
-      distanceToClosestCentroid = distanceToJ;
-    end
-  end
-  idx(i) = closestCentroid;
+##   for j = 1:K
+##     distanceToJ = norm(x - centroids(j, :));
+##     if distanceToJ < distanceToClosestCentroid
+##       closestCentroid = j;
+##       distanceToClosestCentroid = distanceToJ;
+##     end
+##   end
+##   idx(i) = closestCentroid;
+## end
+
+
+distancesToCentroids = zeros(size(X,1), K);
+for j = 1:K
+  distancesToCentroids(:, j) = sqrt(sum((X - centroids(j, :)) .^ 2, 2));
 end
 
-
-
-
-
+[d, idx] = min(distancesToCentroids, [], 2);
 
 % =============================================================
 
