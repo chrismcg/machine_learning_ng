@@ -42,6 +42,10 @@ Theta_grad = zeros(size(Theta));
 
 error = ((X * Theta') - Y) .* R;
 J = sum(sum(error .^ 2)) / 2;
+user_reg = sum(sum(Theta .^ 2, 2)) * (lambda / 2);
+movie_reg = sum(sum(X .^ 2, 2)) * (lambda / 2);
+J = J + user_reg + movie_reg;
+
 
 X_grad = error * Theta;
 Theta_grad = error' * X;
