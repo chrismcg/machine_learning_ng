@@ -47,8 +47,8 @@ movie_reg = sum(sum(X .^ 2, 2)) * (lambda / 2);
 J = J + user_reg + movie_reg;
 
 
-X_grad = error * Theta;
-Theta_grad = error' * X;
+X_grad = (error * Theta) + (lambda * X);
+Theta_grad = (error' * X) + (lambda * Theta);
 
 ## for i = 1:num_movies
 ##   for j = 1:num_users
