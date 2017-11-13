@@ -2,7 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.idea
 
-machine-learning-ex1/ex1/multipleAlphas.csv
-machine-learning-ex2/ex2/*.csv
+octave/ex1/multipleAlphas.csv
+octave/ex2/*.csv
+octave/ex4/different_params
+octave/ex4/images
 **/token.mat
