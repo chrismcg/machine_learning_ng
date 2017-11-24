@@ -54,7 +54,7 @@ def cost_function(theta, x, y):
 
 
 def predict(theta, x):
-    return sigmoid(X.dot(theta)) > 0.5
+    return sigmoid(x.dot(theta)) > 0.5
 
 
 plot_data(X, y)
