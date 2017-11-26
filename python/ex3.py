@@ -1,9 +1,9 @@
-import scipy.io as io
+import scipy.io as sio
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as op
 
-data = io.loadmat("../octave/ex3/ex3data1.mat")
+data = sio.loadmat("../octave/ex3/ex3data1.mat")
 X = data['X']
 y = data['y']
 
