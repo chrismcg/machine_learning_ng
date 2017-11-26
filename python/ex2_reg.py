@@ -61,7 +61,7 @@ def sigmoid(z):
 def cost_function_reg(theta, x, y, reg_lambda):
     m = y.size
     # ensure it's a vector not an array for dot with reshape below
-    h = sigmoid(X.dot(theta.reshape((theta.size, 1))))
+    h = sigmoid(x.dot(theta.reshape((theta.size, 1))))
     regularization = (reg_lambda / (2 * m)) * (theta[1:] ** 2).sum()
 
     y_transpose = y.transpose()
