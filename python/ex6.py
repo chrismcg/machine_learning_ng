@@ -1,6 +1,7 @@
 import scipy.io as sio
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn import svm
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
@@ -99,10 +100,21 @@ X = StandardScaler().fit_transform(X)
 y = y.flatten()
 
 # from http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html
-C_range = np.logspace(-2, 10, 13)
-gamma_range = np.logspace(-9, 3, 13)
+# have changed C_range and gamma_range to match what's in Octave
+# also removed the StratifiedShuffleSplit and just use the default StratifiedKFold
+# This gets close to what octave outputs but it doesn't really look that good.
+# If I leave the params from the link above then it tends to pick a really
+# large C and come up with what looks like a linear separation
+C_range = [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10, 30]
+# gamma_range = [5000, 500, 50, 5, 0.5, 0.05, 0.005, 0.0005, 0.00005]
+sigma_range = np.array([0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30])
+gamma_range = 1 / (2 * (sigma_range ** 2))
 param_grid = dict(gamma=gamma_range, C=C_range)
-cv = StratifiedShuffleSplit(n_splits=5, test_size=0.2, random_state=42)
-grid = GridSearchCV(svm.SVC(), param_grid=param_grid, cv=cv, n_jobs=4)
+grid = GridSearchCV(svm.SVC(), param_grid=param_grid, n_jobs=4)
 grid.fit(X, y)
 print("The best parameters are %s with a score of %0.2f" % (grid.best_params_, grid.best_score_))
+
+model = svm.SVC(C = grid.best_params_['C'], gamma=grid.best_params_['gamma'])
+model.fit(X, y)
+visualize_boundary(X, y, model)
+plt.show()
